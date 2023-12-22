@@ -1,6 +1,6 @@
 # This docker image contains all the steps to analyze the nightly-2020-08-26
 # rustc and standard library.
-FROM rudra:2020-08-26
+FROM rudra:2023-12-20
 
 # Install xargo to easily compile rustc and the standard library.
 RUN cargo install xargo
@@ -8,7 +8,7 @@ RUN cargo install xargo
 RUN rustup component add rust-src
 
 # Grab the sources for rustc's rayon fork for the version used in
-# nightly-2020-08-26.
+# nightly-2023-12-20.
 RUN git clone https://github.com/rust-lang/rustc-rayon.git \
     && cd rustc-rayon \
     && git checkout ae7bbbd2756

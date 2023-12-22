@@ -58,7 +58,7 @@ impl<'tcx> UnsafeDataflowChecker<'tcx> {
                     && behavior_flag.report_level() >= self.rcx.report_level()
                 {
                     let mut color_span = unwrap_or!(
-                        utils::ColorSpan::new(tcx, related_item_span).context(InvalidSpan) => continue
+                        utils::ColorSpan::new(tcx, related_item_span).context(UnsafeDataflowError::InvalidSpan) => continue
                     );
 
                     for &span in status.strong_bypass_spans() {
@@ -229,7 +229,7 @@ mod inner {
                                 callee_did,
                                 callee_substs,
                             ) {
-                                Err(_e) => log_err!(ResolveError),
+                                Err(_e) => log_err!(UnsafeDataflowError::ResolveError),
                                 Ok(Some(_)) => {
                                     // Calls were successfully resolved
                                 }
@@ -269,7 +269,7 @@ mod inner {
                             let place_ty = place.ty(self.body, tcx);
                             if let TyKind::RawPtr(ty_and_mut) = place_ty.ty.kind();
                             let pointed_ty = ty_and_mut.ty;
-                            if pointed_ty.is_copy_modulo_regions(tcx.at(DUMMY_SP), self.param_env);
+                            if pointed_ty.is_copy_modulo_regions(*tcx.at(DUMMY_SP), self.param_env);
                             then {
                                 return true;
                             }
@@ -332,7 +332,7 @@ mod inner {
 // Unsafe Dataflow BypassKind.
 // Used to associate each Unsafe-Dataflow bug report with its cause.
 bitflags! {
-    #[derive(Default)]
+    #[derive(Default, Clone)]
     pub struct BehaviorFlag: u16 {
         const READ_FLOW = 0b00000001;
         const COPY_FLOW = 0b00000010;

@@ -60,7 +60,7 @@ pub enum AnalysisErrorKind {
     OutOfScope,
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Clone)]
 pub enum AnalysisKind {
     UnsafeDestructor,
     SendSyncVariance(SendSyncBehaviorFlag),

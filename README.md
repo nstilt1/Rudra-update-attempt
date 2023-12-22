@@ -50,7 +50,7 @@ Rudra can be run as a GitHub Action allowing the static analyze to be used in an
 
 Rudra is tied to a specific Rust compiler version,
 and it can only analyze projects that compiles with this version of the compiler.
-`master` branch uses `nightly-2021-08-20` version of Rust right now.
+`master` branch uses `nightly-2023-12-20` version of Rust right now.
 Check [the version page][version] for all supported versions.
 
 [version]: https://github.com/sslab-gatech/Rudra/pkgs/container/rudra/versions?filters%5Bversion_type%5D=tagged
@@ -60,7 +60,6 @@ Check [the version page][version] for all supported versions.
 - Rudra does not support workspaces (#11).
   You can install Rudra on your host system (see [DEV.md](./DEV.md))
   and run analysis in the subdirectories to sidestep the problem for now.
-- Rudra does not support edition 2021 yet (#19).
 - Rudra does not support suppressing warnings in specific locations.
   This could cause a usability issue when used in CI/CD due to false positives.
 
@@ -134,7 +133,7 @@ Example: [futures#2239](https://github.com/rust-lang/futures-rs/issues/2239)
 ## Bugs Found by Rudra
 
 Rudra was ran on the entirety of crates.io state as of July 4th, 2020 as well
-as the Rust standard library from `nightly-2020-08-26`. It managed to find 264
+as the Rust standard library from `nightly-2023-12-20`. It managed to find 264
 new memory safety issues across the Rust ecosystem which resulted in 76 CVEs.
 
 The details of these bugs can be found in the [Rudra-PoC repo](https://github.com/sslab-gatech/Rudra-PoC).

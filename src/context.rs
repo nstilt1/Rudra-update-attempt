@@ -206,7 +206,7 @@ impl<'tcx> RudraCtxtOwner<'tcx> {
                 "Skipping an item {:?}, no MIR available for this item",
                 def_id
             );
-            NotAvailable { def_id }.fail()
+            AnalysisError::NotAvailable { def_id }.fail()
         }
     }
 

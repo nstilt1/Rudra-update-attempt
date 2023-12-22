@@ -4,10 +4,10 @@
 use std::borrow::Cow;
 
 use rustc_hir::def_id::DefId;
-use rustc_index::vec::IndexVec;
+use rustc_index::{IndexSlice, IndexVec};
 use rustc_middle::{
     mir,
-    ty::{subst::SubstsRef, Ty},
+    ty::Ty,
 };
 
 #[derive(Debug)]
@@ -22,13 +22,13 @@ pub enum TerminatorKind<'tcx> {
     Return,
     StaticCall {
         callee_did: DefId,
-        callee_substs: SubstsRef<'tcx>,
+        callee_substs: Ty<'tcx>,
         args: Vec<mir::Operand<'tcx>>,
         cleanup: Option<usize>,
         destination: Option<(mir::Place<'tcx>, usize)>,
     },
     FnPtr {
-        value: mir::ConstantKind<'tcx>,
+        value: mir::Const<'tcx>,
     },
     Unimplemented(Cow<'static, str>),
 }
@@ -54,7 +54,7 @@ pub struct Body<'tcx> {
 }
 
 impl<'tcx> mir::HasLocalDecls<'tcx> for Body<'tcx> {
-    fn local_decls(&self) -> &IndexVec<mir::Local, mir::LocalDecl<'tcx>> {
+    fn local_decls(&self) -> &IndexSlice<mir::Local, mir::LocalDecl<'tcx>> {
         &self.original_decls
     }
 }

@@ -1,10 +1,13 @@
 [package]
 name = "rudra"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Yechan Bae <yechan@gatech.edu>"]
 default-run = "rudra"
-edition = "2018"
+edition = "2021"
 exclude = ["samples"]
+
+[package.metadata.rust-analyzer]
+rustc_private = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -23,24 +26,24 @@ test = false
 doctest = false
 
 [dependencies]
-cargo_metadata = "0.11"
+cargo_metadata = "0.18.1"
 chrono = "0.4"
-dashmap = "3.11"
+dashmap = "5.5.3"
 fern = "0.6.0"
 if_chain = "1.0"
 log = "0.4"
 maplit = "1.0.2"
 once_cell = "1.5.2"
-parking_lot = "0.11"
-rustc_version = "0.2.3"
+parking_lot = "0.12.1"
+rustc_version = "0.4.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.56"
-snafu = "0.6"
+snafu = "0.7.5"
 termcolor = "1.1.2"
-toml = "0.5.6"
+toml = "0.8.8"
 wait-timeout = "0.2"
-bitflags = "1.2.1"
-which = "4.0"
+bitflags = "2.4.1"
+which = "5.0"
 
 [features]
 backtraces = ["snafu/backtraces", "snafu/backtraces-impl-backtrace-crate"]

@@ -12,13 +12,12 @@ use rustc_data_structures::fx::{FxHashMap, FxHashSet};
 use rustc_hir::def_id::{DefId, LocalDefId};
 use rustc_hir::{
     GenericBound, GenericParam, GenericParamKind, HirId, Impl, ImplPolarity, ItemId, ItemKind,
-    Node, WherePredicate,
+    Node, WherePredicate, Mutability
 };
-use rustc_middle::mir::terminator::Mutability;
 use rustc_middle::ty::{
     self,
-    subst::{self, GenericArgKind},
-    AssocKind, GenericParamDef, GenericParamDefKind, List, PredicateKind, Ty, TyCtxt, TyS,
+    GenericArgKind, GenericArgs,
+    AssocKind, GenericParamDef, GenericParamDefKind, List, PredicateKind, Ty, TyCtxt,
 };
 use rustc_span::symbol::sym;
 
@@ -144,23 +143,23 @@ impl<'tcx> SendSyncVarianceChecker<'tcx> {
 /// Check Send Trait
 fn send_trait_def_id<'tcx>(tcx: TyCtxt<'tcx>) -> AnalysisResult<'tcx, DefId> {
     convert!(tcx
-        .get_diagnostic_item(sym::send_trait)
-        .context(SendTraitNotFound))
+        .get_diagnostic_item(sym::dyn_trait)
+        .context(SendTraitNotFoundSnafu))
 }
 
 /// Check Sync Trait
 fn sync_trait_def_id<'tcx>(tcx: TyCtxt<'tcx>) -> AnalysisResult<'tcx, DefId> {
-    convert!(tcx.lang_items().sync_trait().context(SyncTraitNotFound))
+    convert!(tcx.lang_items().sync_trait().context(SyncTraitNotFoundSnafu))
 }
 
 /// Check Copy Trait
 fn copy_trait_def_id<'tcx>(tcx: TyCtxt<'tcx>) -> AnalysisResult<'tcx, DefId> {
-    convert!(tcx.lang_items().copy_trait().context(CopyTraitNotFound))
+    convert!(tcx.lang_items().copy_trait().context(CopyTraitNotFoundSnafu))
 }
 
 /// Check Clone Trait
 fn _clone_trait_def_id<'tcx>(tcx: TyCtxt<'tcx>) -> AnalysisResult<'tcx, DefId> {
-    convert!(tcx.lang_items().clone_trait().context(CloneTraitNotFound))
+    convert!(tcx.lang_items().clone_trait().context(CloneTraitNotFoundSnafu))
 }
 
 #[derive(Debug, Snafu)]

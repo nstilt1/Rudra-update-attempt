@@ -1,9 +1,9 @@
-#![feature(backtrace)]
 #![feature(box_patterns)]
 #![feature(rustc_private)]
 #![feature(try_blocks)]
 #![feature(never_type)]
 
+extern crate rustc_ast_pretty;
 extern crate rustc_data_structures;
 extern crate rustc_driver;
 extern crate rustc_errors;
@@ -12,7 +12,6 @@ extern crate rustc_hir_pretty;
 extern crate rustc_index;
 extern crate rustc_interface;
 extern crate rustc_middle;
-extern crate rustc_mir;
 extern crate rustc_span;
 
 #[macro_use]

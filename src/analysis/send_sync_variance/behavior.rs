@@ -169,7 +169,7 @@ pub(crate) fn adt_behavior<'tcx>(
                                 }
                             } else {
                                 // Check if the function return type equals `Self`.
-                                if TyS::same_type(fn_sig.output(), adt_ty) {
+                                if Ty::same_type(fn_sig.output(), adt_ty) {
                                     return Some(FnType::ConstructSelf(fn_did));
                                 }
                             }

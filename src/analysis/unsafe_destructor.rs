@@ -1,6 +1,6 @@
 //! Unsafe destructor detector
 use rustc_hir::def_id::DefId;
-use rustc_hir::intravisit::{self, NestedVisitorMap, Visitor};
+use rustc_hir::intravisit::{self, Visitor};
 use rustc_hir::{
     Block, BodyId, Expr, HirId, Impl, ImplItemId, ImplItemKind, ItemKind, Node, Unsafety,
 };
@@ -44,7 +44,7 @@ impl<'tcx> UnsafeDestructorChecker<'tcx> {
 
     pub fn analyze(&mut self) {
         fn drop_trait_def_id<'tcx>(tcx: TyCtxt<'tcx>) -> AnalysisResult<'tcx, DefId> {
-            convert!(tcx.lang_items().drop_trait().context(DropTraitNotFound))
+            convert!(tcx.lang_items().drop_trait().context(AnalysisError::DropTraitNotFound))
         }
 
         // key is DefId of trait, value is vec of HirId
@@ -111,12 +111,12 @@ mod inner {
                         let drop_fn_impl_item_id = drop_fn_item_ref.id;
                         return visitor.check_impl_item(drop_fn_impl_item_id);
                     }
-                    log_err!(UnexpectedDropItem);
+                    log_err!(AnalysisError::UnexpectedDropItem);
                     return false;
                 }
             }
 
-            log_err!(InvalidHirId);
+            log_err!(AnalysisError::InvalidHirId);
             false
         }
 
@@ -125,7 +125,7 @@ mod inner {
             if let ImplItemKind::Fn(_sig, body_id) = &impl_item.kind {
                 self.check_body(*body_id)
             } else {
-                log_err!(UnexpectedDropItem);
+                log_err!(AnalysisError::UnexpectedDropItem);
                 false
             }
         }
@@ -141,8 +141,8 @@ mod inner {
     impl<'tcx> Visitor<'tcx> for UnsafeDestructorVisitor<'tcx> {
         type Map = rustc_middle::hir::map::Map<'tcx>;
 
-        fn nested_visit_map(&mut self) -> NestedVisitorMap<Self::Map> {
-            NestedVisitorMap::OnlyBodies(self.rcx.tcx().hir())
+        fn nested_visit_map(&mut self) -> Self::Map {
+            Self::Map::OnlyBodies(self.rcx.tcx().hir())
         }
 
         fn visit_block(&mut self, block: &'tcx Block<'tcx>) {
