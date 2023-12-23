@@ -2,7 +2,7 @@ use rustc_data_structures::fx::FxHashMap;
 use rustc_hir::{
     def_id::{DefId, LocalDefId},
     intravisit,
-    itemlikevisit::ItemLikeVisitor,
+    itemlikevisit::ParItemLikeVisitor,
     Block, BodyId, HirId, Impl, ItemKind,
 };
 use rustc_middle::ty::{Ty, TyCtxt, TyKind};
@@ -33,7 +33,7 @@ impl<'tcx> RelatedFnCollector<'tcx> {
     }
 }
 
-impl<'tcx> ItemLikeVisitor<'tcx> for RelatedFnCollector<'tcx> {
+impl<'tcx> ParItemLikeVisitor<'tcx> for RelatedFnCollector<'tcx> {
     fn visit_item(&mut self, item: &'tcx rustc_hir::Item<'tcx>) {
         let hir_map = self.tcx.hir();
         match &item.kind {
@@ -113,8 +113,8 @@ impl<'tcx> ContainsUnsafe<'tcx> {
 impl<'tcx> intravisit::Visitor<'tcx> for ContainsUnsafe<'tcx> {
     type Map = rustc_middle::hir::map::Map<'tcx>;
 
-    fn nested_visit_map(&mut self) -> intravisit::NestedVisitorMap<Self::Map> {
-        intravisit::NestedVisitorMap::OnlyBodies(self.tcx.hir())
+    fn nested_visit_map(&mut self) -> Self::Map {
+        Self::Map::OnlyBodies(self.tcx.hir())
     }
 
     fn visit_block(&mut self, block: &'tcx Block<'tcx>) {
@@ -150,7 +150,7 @@ pub fn create_adt_impl_map<'tcx>(tcx: TyCtxt<'tcx>) -> AdtImplMap<'tcx> {
                 // `AdtDef.did` refers to the original ADT definition.
                 // Thus it can be used to map & collect impls for all instantitations of the same ADT.
 
-                map.entry(impl_self_adt_def.did)
+                map.entry(impl_self_adt_def.did())
                     .or_insert_with(|| Vec::new())
                     .push((item.def_id, impl_self_ty));
             }

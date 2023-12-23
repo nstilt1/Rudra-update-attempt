@@ -64,8 +64,8 @@ pub fn owned_generic_params_in_ty<'tcx>(
 
                 // Try limiting to cases like Option<T> & Result<T, !> to reduce FP rate.
                 for path in OWNING_ADTS {
-                    if ext.match_def_path(adt_def.did, path) {
-                        for adt_variant in adt_def.variants.iter() {
+                    if ext.match_def_path(adt_def.did(), path) {
+                        for adt_variant in adt_def.variants().iter() {
                             for adt_field in adt_variant.fields.iter() {
                                 let ty = adt_field.ty(tcx, substs);
                                 if let ty::TyKind::Param(_) = ty.kind() {
@@ -77,11 +77,11 @@ pub fn owned_generic_params_in_ty<'tcx>(
                 }
             }
             ty::TyKind::Array(ty, _) => {
-                worklist.push(ty);
+                worklist.push(*ty);
             }
             ty::TyKind::Tuple(substs) => {
                 for ty in substs.types() {
-                    worklist.push(ty);
+                    worklist.push(*ty);
                 }
             }
             _ => {}

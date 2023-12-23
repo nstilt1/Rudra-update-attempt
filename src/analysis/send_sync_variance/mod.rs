@@ -18,9 +18,8 @@ use rustc_middle::mir::terminator::Mutability;
 use rustc_middle::ty::{
     self,
     subst::{self, GenericArgKind},
-    AssocKind, GenericParamDef, GenericParamDefKind, List, PredicateKind, Ty, TyCtxt, TyS,
+    AssocKind, GenericParamDef, GenericParamDefKind, List, PredicateKind, Ty, TyCtxt,
 };
-use rustc_span::symbol::sym;
 
 use snafu::{OptionExt, Snafu};
 
@@ -144,7 +143,7 @@ impl<'tcx> SendSyncVarianceChecker<'tcx> {
 /// Check Send Trait
 fn send_trait_def_id<'tcx>(tcx: TyCtxt<'tcx>) -> AnalysisResult<'tcx, DefId> {
     convert!(tcx
-        .get_diagnostic_item(sym::send_trait)
+        .lang_items().send_trait()
         .context(SendTraitNotFound))
 }
 
