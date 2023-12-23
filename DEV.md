@@ -4,17 +4,17 @@
 
 ### First-time setup
 
-You need a specific version of nightly Rust (nightly-2021-10-21) for Rudra development.
+You need a specific version of nightly Rust (nightly-2023-12-19) for Rudra development.
 
 ```
 # Toolchain setup
-rustup install nightly-2021-10-21
-rustup default nightly-2021-10-21
+rustup install nightly-2023-12-20
+rustup default nightly-2023-12-20
 rustup component add rustc-dev
 rustup component add miri
 
 # Environment variable setup, put these in your `.bashrc`
-export RUDRA_RUST_CHANNEL=nightly-2021-10-21
+export RUDRA_RUST_CHANNEL=nightly-2023-12-20
 export RUDRA_RUNNER_HOME="<your runner home path - use setup_rudra_runner_home.py>"
 
 export RUSTFLAGS="-L $HOME/.rustup/toolchains/${RUDRA_RUST_CHANNEL}-x86_64-unknown-linux-gnu/lib"
@@ -99,10 +99,10 @@ cargo rudra  # for crate compilation
 Run:
 ```
 cd ..
-git clone https://github.com/rust-lang/rust.git rust-nightly-2021-10-21
-cd rust-nightly-2021-10-21
+git clone https://github.com/rust-lang/rust.git rust-nightly-2023-12-20
+cd rust-nightly-2023-12-20
 # Can be found with rustc --version
-git checkout efd048394
+git checkout f704f3b93
 git submodule init
 git submodule update
 ```
@@ -110,7 +110,7 @@ git submodule update
 Then, add this to the workspace setting (`.vscode/settings.json`):
 ```
 {
-    "rust-analyzer.rustc.source": "<your path to rust-nightly-2021-10-21>/Cargo.toml"
+    "rust-analyzer.rustc.source": "<your path to rust-nightly-2023-12-20>/Cargo.toml"
 }
 ```
 
@@ -123,6 +123,6 @@ cargo build --release
 2. Add this to the workspace setting (`.vscode/settings.json`):
 ```
 {
-   "rust-analyzer.server.path": "<your path to rust-nightly-2021-10-21>/src/tools/rust-analyzer/target/release/rust-analyzer"
+   "rust-analyzer.server.path": "<your path to rust-nightly-2021-12-20>/src/tools/rust-analyzer/target/release/rust-analyzer"
 }
 ```
