@@ -1,6 +1,4 @@
 use rustc_hir::def_id::LocalDefId;
-use rustc_hir::intravisit::Map;
-use rustc_hir_pretty::PpAnn;
 use rustc_middle::ty::TyCtxt;
 
 use std::borrow::Cow;
@@ -96,10 +94,10 @@ impl Report {
         let source_map = tcx.sess.source_map();
         let source = if span.from_expansion() {
             // User-Friendly report for macro-generated code
-            // rustc_hir_pretty::id_to_string(&hir_map, item_hir_id)
-            rustc_hir_pretty::to_string(&hir_map as &dyn rustc_hir::intravisit::Map, |state| {
-                state.print_item(hir_map.expect_item(item_hir_id));
-            })
+            rustc_hir_pretty::id_to_string(&hir_map, item_hir_id)
+            // rustc_hir_pretty::to_string(&hir_map as &dyn rustc_hir::intravisit::Map, |state| {
+            //     state.print_item(hir_map.expect_item(item_hir_id));
+            // })
         } else {
             source_map
                 .span_to_snippet(span)

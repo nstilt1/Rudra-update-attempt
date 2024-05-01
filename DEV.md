@@ -4,17 +4,17 @@
 
 ### First-time setup
 
-You need a specific version of nightly Rust (nightly-2021-10-21) for Rudra development.
+You need a specific version of nightly Rust (nightly-2022-01-20) for Rudra development.
 
 ```
 # Toolchain setup
-rustup install nightly-2021-10-21
-rustup default nightly-2021-10-21
+rustup install nightly-2022-01-20
+rustup default nightly-2022-01-20
 rustup component add rustc-dev
 rustup component add miri
 
 # Environment variable setup, put these in your `.bashrc`
-export RUDRA_RUST_CHANNEL=nightly-2021-10-21
+export RUDRA_RUST_CHANNEL=nightly-2022-01-20
 export RUDRA_RUNNER_HOME="<your runner home path - use setup_rudra_runner_home.py>"
 
 export RUSTFLAGS="-L $HOME/.rustup/toolchains/${RUDRA_RUST_CHANNEL}-x86_64-unknown-linux-gnu/lib"

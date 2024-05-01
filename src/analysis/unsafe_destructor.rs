@@ -1,6 +1,6 @@
 //! Unsafe destructor detector
 use rustc_hir::def_id::DefId;
-use rustc_hir::intravisit::{self, NestedVisitorMap, Visitor};
+use rustc_hir::intravisit::{self, Visitor};
 use rustc_hir::{
     Block, BodyId, Expr, HirId, Impl, ImplItemId, ImplItemKind, ItemKind, Node, Unsafety,
 };
@@ -139,10 +139,10 @@ mod inner {
     }
 
     impl<'tcx> Visitor<'tcx> for UnsafeDestructorVisitor<'tcx> {
-        type Map = rustc_middle::hir::map::Map<'tcx>;
+        type NestedFilter = rustc_middle::hir::nested_filter::OnlyBodies;
 
-        fn nested_visit_map(&mut self) -> NestedVisitorMap<Self::Map> {
-            NestedVisitorMap::OnlyBodies(self.rcx.tcx().hir())
+        fn nested_visit_map(&mut self) -> Self::Map {
+            self.rcx.tcx().hir()
         }
 
         fn visit_block(&mut self, block: &'tcx Block<'tcx>) {

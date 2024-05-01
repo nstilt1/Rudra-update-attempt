@@ -111,10 +111,10 @@ impl<'tcx> ContainsUnsafe<'tcx> {
 }
 
 impl<'tcx> intravisit::Visitor<'tcx> for ContainsUnsafe<'tcx> {
-    type Map = rustc_middle::hir::map::Map<'tcx>;
+    type NestedFilter = rustc_middle::hir::nested_filter::OnlyBodies;
 
-    fn nested_visit_map(&mut self) -> intravisit::NestedVisitorMap<Self::Map> {
-        intravisit::NestedVisitorMap::OnlyBodies(self.tcx.hir())
+    fn nested_visit_map(&mut self) -> Self::Map {
+        self.tcx.hir()
     }
 
     fn visit_block(&mut self, block: &'tcx Block<'tcx>) {
